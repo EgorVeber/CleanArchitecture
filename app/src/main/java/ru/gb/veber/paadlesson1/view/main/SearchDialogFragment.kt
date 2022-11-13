@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.view
+package ru.gb.veber.paadlesson1.view.main
 
 import android.os.Bundle
 import android.text.Editable
@@ -18,7 +18,8 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
     private val textWatcher = object : TextWatcher {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if (binding.searchEditText.text != null && !binding.searchEditText.text.toString().isEmpty()
+            if (binding.searchEditText.text != null && !binding.searchEditText.text.toString()
+                    .isEmpty()
             ) {
                 binding.searchButtonTextview.isEnabled = true
                 binding.clearTextImageview.visibility = View.VISIBLE
@@ -46,7 +47,7 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = SearchDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
@@ -72,7 +73,6 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
     }
 
     interface OnSearchClickListener {
-
         fun onClick(searchWord: String)
     }
 

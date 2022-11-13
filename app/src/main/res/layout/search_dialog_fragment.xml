@@ -1,12 +1,10 @@
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/bottom_sheet_dialog_layout"
-        android:layout_width="match_parent"
-        android:layout_height="205dp"
-        android:orientation="vertical"
-        android:fitsSystemWindows="true"
-        android:layout_marginBottom="@dimen/margin_medium">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_sheet_dialog_layout"
+    android:layout_width="match_parent"
+    android:layout_height="205dp"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:layout_marginBottom="@dimen/margin_medium">
 
     <TextView
             android:id="@+id/search_button_textview"

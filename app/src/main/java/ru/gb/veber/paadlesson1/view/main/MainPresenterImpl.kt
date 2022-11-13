@@ -1,13 +1,14 @@
-package ru.gb.veber.paadlesson1.presenter
+package ru.gb.veber.paadlesson1.view.main
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
-import ru.gb.veber.paadlesson1.AppState
-import ru.gb.veber.paadlesson1.model.DataSourceLocal
-import ru.gb.veber.paadlesson1.model.DataSourceRemote
-import ru.gb.veber.paadlesson1.model.RepositoryImplementation
-import ru.gb.veber.paadlesson1.myinterface.Presenter
-import ru.gb.veber.paadlesson1.myinterface.View
+import ru.gb.veber.paadlesson1.model.datasources.RepositoryImplementation
+import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.datasources.DataSourceLocal
+import ru.gb.veber.paadlesson1.model.datasources.DataSourceRemote
+import ru.gb.veber.paadlesson1.presenter.Presenter
+import ru.gb.veber.paadlesson1.rx.SchedulerProvider
+import ru.gb.veber.paadlesson1.view.base.View
 
 class MainPresenterImpl<T : AppState, V : View>(
     private val interact: MainInteractor = MainInteractor(

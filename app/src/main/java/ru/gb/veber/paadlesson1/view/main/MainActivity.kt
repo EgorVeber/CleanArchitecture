@@ -1,17 +1,17 @@
-package ru.gb.veber.paadlesson1.view
+package ru.gb.veber.paadlesson1.view.main
 
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.gb.veber.paadlesson1.AppState
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
-import ru.gb.veber.paadlesson1.model.DataModel
-import ru.gb.veber.paadlesson1.myinterface.Presenter
-import ru.gb.veber.paadlesson1.myinterface.View
-import ru.gb.veber.paadlesson1.presenter.MainPresenterImpl
+import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.data.DataModel
+import ru.gb.veber.paadlesson1.presenter.Presenter
+import ru.gb.veber.paadlesson1.view.base.BaseActivity
+import ru.gb.veber.paadlesson1.view.base.View
 
 class MainActivity : BaseActivity<AppState>() {
 

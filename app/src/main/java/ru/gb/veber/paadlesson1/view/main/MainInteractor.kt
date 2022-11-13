@@ -1,10 +1,10 @@
-package ru.gb.veber.paadlesson1.presenter
+package ru.gb.veber.paadlesson1.view.main
 
 import io.reactivex.Observable
-import ru.gb.veber.paadlesson1.AppState
-import ru.gb.veber.paadlesson1.model.DataModel
-import ru.gb.veber.paadlesson1.myinterface.Interactor
-import ru.gb.veber.paadlesson1.myinterface.Repository
+import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.data.DataModel
+import ru.gb.veber.paadlesson1.model.repository.Repository
+import ru.gb.veber.paadlesson1.presenter.Interactor
 
 class MainInteractor(
     private val remoteRepo: Repository<List<DataModel>>,

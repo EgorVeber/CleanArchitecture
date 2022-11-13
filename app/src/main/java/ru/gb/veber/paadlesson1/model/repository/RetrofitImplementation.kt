@@ -1,17 +1,16 @@
-package ru.gb.veber.paadlesson1.model
+package ru.gb.veber.paadlesson1.model.repository
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
-import ru.gb.veber.paadlesson1.myinterface.DataSource
-import java.io.IOException
+import ru.gb.veber.paadlesson1.model.data.DataModel
+import ru.gb.veber.paadlesson1.model.datasources.ApiService
+import ru.gb.veber.paadlesson1.model.datasources.BaseInterceptor
+import ru.gb.veber.paadlesson1.model.datasources.DataSource
 
 class RetrofitImplementation : DataSource<List<DataModel>> {
     override fun getData(word: String): Observable<List<DataModel>> {
@@ -44,44 +43,5 @@ class RetrofitImplementation : DataSource<List<DataModel>> {
     }
 }
 
-class BaseInterceptor private constructor() : Interceptor {
-    private var responseCode: Int = 0
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val response = chain.proceed(chain.request())
-        responseCode = response.code
-        return response
-    }
 
-    fun getResponseCode(): ServerResponseStatusCode {
-        var statusCode = ServerResponseStatusCode.UNDEFINED_ERROR
-        when (responseCode / 100) {
-            1 -> statusCode = ServerResponseStatusCode.INFO
-            2 -> statusCode = ServerResponseStatusCode.SUCCESS
-            3 -> statusCode = ServerResponseStatusCode.REDIRECTION
-            4 -> statusCode = ServerResponseStatusCode.CLIENT_ERROR
-            5 -> statusCode = ServerResponseStatusCode.SERVER_ERROR
-        }
-        return statusCode
-    }
-
-    enum class ServerResponseStatusCode {
-        INFO,
-        SUCCESS,
-        REDIRECTION,
-        CLIENT_ERROR,
-        SERVER_ERROR,
-        UNDEFINED_ERROR
-    }
-
-    companion object {
-        val interceptor: BaseInterceptor
-            get() = BaseInterceptor()
-    }
-}
-
-interface ApiService {
-    @GET("words/search")
-    fun search(@Query("search") wordToSearch: String): Observable<List<DataModel>>
-}
