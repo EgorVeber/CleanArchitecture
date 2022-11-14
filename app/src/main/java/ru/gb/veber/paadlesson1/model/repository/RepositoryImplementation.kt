@@ -1,8 +1,8 @@
-package ru.gb.veber.paadlesson1.model.datasources
+package ru.gb.veber.paadlesson1.model.repository
 
 import io.reactivex.Observable
-import ru.gb.veber.paadlesson1.model.data.DataModel
-import ru.gb.veber.paadlesson1.model.repository.Repository
+import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
+import ru.gb.veber.paadlesson1.model.datasources.DataSource
 
 class RepositoryImplementation(private val dataSources: DataSource<List<DataModel>>) :
     Repository<List<DataModel>> {

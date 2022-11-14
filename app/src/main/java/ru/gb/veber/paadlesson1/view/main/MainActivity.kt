@@ -1,14 +1,17 @@
 package ru.gb.veber.paadlesson1.view.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
-import ru.gb.veber.paadlesson1.model.data.AppState
-import ru.gb.veber.paadlesson1.model.data.DataModel
+import ru.gb.veber.paadlesson1.model.AppState
+import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
+import ru.gb.veber.paadlesson1.presenter.MainPresenterImpl
 import ru.gb.veber.paadlesson1.presenter.Presenter
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
 import ru.gb.veber.paadlesson1.view.base.View
@@ -33,17 +36,27 @@ class MainActivity : BaseActivity<AppState>() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.searchFab.setOnClickListener {
-            val searchDialogFragment = SearchDialogFragment.newInstance()
-            searchDialogFragment.setOnSearchClickListener(object :
-                SearchDialogFragment.OnSearchClickListener {
-                override fun onClick(searchWord: String) {
-                    presenter.getData(searchWord, true)
-                }
-            })
-            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        initialization()
+    }
+
+    private fun initialization() {
+        binding.searchView.setOnQueryTextListener(searchViewListener)
+    }
+
+    private val searchViewListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            query?.let { keyWord ->
+                presenter.getData(keyWord, true)
+            }
+            binding.searchView.clearFocus();
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return true
         }
     }
+
 
     override fun renderData(appState: AppState) {
         when (appState) {
@@ -95,13 +108,12 @@ class MainActivity : BaseActivity<AppState>() {
     }
 
     private fun showViewLoading() {
-        binding.successLinearLayout.visibility = GONE
         binding.loadingFrameLayout.visibility = VISIBLE
         binding.errorLinearLayout.visibility = GONE
     }
 
     private fun showViewError() {
-        binding.successLinearLayout.visibility = GONE
+
         binding.loadingFrameLayout.visibility = GONE
         binding.errorLinearLayout.visibility = VISIBLE
     }

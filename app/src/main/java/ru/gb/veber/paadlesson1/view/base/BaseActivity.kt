@@ -1,8 +1,9 @@
 package ru.gb.veber.paadlesson1.view.base
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.AppState
 import ru.gb.veber.paadlesson1.presenter.Presenter
 
 abstract class BaseActivity<T : AppState> : AppCompatActivity(), View {

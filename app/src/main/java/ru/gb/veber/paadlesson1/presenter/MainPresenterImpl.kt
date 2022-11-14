@@ -1,12 +1,11 @@
-package ru.gb.veber.paadlesson1.view.main
+package ru.gb.veber.paadlesson1.presenter
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
-import ru.gb.veber.paadlesson1.model.datasources.RepositoryImplementation
-import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.repository.RepositoryImplementation
+import ru.gb.veber.paadlesson1.model.AppState
 import ru.gb.veber.paadlesson1.model.datasources.DataSourceLocal
 import ru.gb.veber.paadlesson1.model.datasources.DataSourceRemote
-import ru.gb.veber.paadlesson1.presenter.Presenter
 import ru.gb.veber.paadlesson1.rx.SchedulerProvider
 import ru.gb.veber.paadlesson1.view.base.View
 
@@ -14,8 +13,8 @@ class MainPresenterImpl<T : AppState, V : View>(
     private val interact: MainInteractor = MainInteractor(
         RepositoryImplementation(DataSourceRemote()),
         RepositoryImplementation(DataSourceLocal())),
-    protected val compositeDisposable: CompositeDisposable = CompositeDisposable(),
-    protected val schedulerProvider: SchedulerProvider = SchedulerProvider(),
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable(),
+    private val schedulerProvider: SchedulerProvider = SchedulerProvider(),
 ) : Presenter<T, V> {
 
     private var currentView: V? = null

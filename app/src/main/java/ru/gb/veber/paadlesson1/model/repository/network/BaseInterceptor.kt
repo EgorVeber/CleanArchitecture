@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.model.datasources
+package ru.gb.veber.paadlesson1.model.repository.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

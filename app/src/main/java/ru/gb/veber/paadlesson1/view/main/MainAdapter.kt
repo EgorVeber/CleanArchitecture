@@ -1,13 +1,10 @@
 package ru.gb.veber.paadlesson1.view.main
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import ru.gb.veber.paadlesson1.R
-import ru.gb.veber.paadlesson1.model.data.DataModel
-
+import ru.gb.veber.paadlesson1.databinding.ActivityMainRecyclerviewItemBinding
+import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
@@ -21,10 +18,8 @@ class MainAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-        return RecyclerItemViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.activity_main_recyclerview_item, parent, false) as View
-        )
+        return RecyclerItemViewHolder(ActivityMainRecyclerviewItemBinding.inflate(LayoutInflater.from(
+            parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
@@ -35,12 +30,13 @@ class MainAdapter(
         return data.size
     }
 
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(private var binging: ActivityMainRecyclerviewItemBinding) :
+        RecyclerView.ViewHolder(binging.root) {
 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text = data.text
-                itemView.findViewById<TextView>(R.id.description_textview_recycler_item).text =
+                binging.headerTextviewRecyclerItem.text = data.text
+                binging.descriptionTextviewRecyclerItem.text =
                     data.meanings?.get(0)?.translation?.translation
                 itemView.setOnClickListener { openInNewWindow(data) }
             }

@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.model.repository
+package ru.gb.veber.paadlesson1.model.repository.network
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
@@ -7,9 +7,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.gb.veber.paadlesson1.model.data.DataModel
-import ru.gb.veber.paadlesson1.model.datasources.ApiService
-import ru.gb.veber.paadlesson1.model.datasources.BaseInterceptor
+import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
+import ru.gb.veber.paadlesson1.model.datasources.network.ApiService
 import ru.gb.veber.paadlesson1.model.datasources.DataSource
 
 class RetrofitImplementation : DataSource<List<DataModel>> {
