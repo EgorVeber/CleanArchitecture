@@ -7,9 +7,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
-import ru.gb.veber.paadlesson1.model.datasources.network.ApiService
 import ru.gb.veber.paadlesson1.model.datasources.DataSource
+import ru.gb.veber.paadlesson1.model.datasources.network.ApiService
+import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
 
 class RetrofitImplementation : DataSource<List<DataModel>> {
     override fun getData(word: String): Observable<List<DataModel>> {

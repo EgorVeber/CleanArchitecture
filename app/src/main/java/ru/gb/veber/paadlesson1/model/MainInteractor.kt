@@ -1,7 +1,8 @@
-package ru.gb.veber.paadlesson1.presenter
+package ru.gb.veber.paadlesson1.model
 
 import io.reactivex.Observable
 import ru.gb.veber.paadlesson1.model.AppState
+import ru.gb.veber.paadlesson1.model.Interactor
 import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
 import ru.gb.veber.paadlesson1.model.repository.Repository
 

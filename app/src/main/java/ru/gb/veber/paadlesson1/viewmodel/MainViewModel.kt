@@ -6,7 +6,7 @@ import ru.gb.veber.paadlesson1.model.AppState
 import ru.gb.veber.paadlesson1.model.datasources.DataSourceLocal
 import ru.gb.veber.paadlesson1.model.datasources.DataSourceRemote
 import ru.gb.veber.paadlesson1.model.repository.RepositoryImplementation
-import ru.gb.veber.paadlesson1.presenter.MainInteractor
+import ru.gb.veber.paadlesson1.model.MainInteractor
 
 class MainViewModel(
     private val interact: MainInteractor = MainInteractor(
