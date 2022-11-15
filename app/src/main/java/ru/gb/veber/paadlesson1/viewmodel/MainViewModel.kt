@@ -1,38 +1,45 @@
 package ru.gb.veber.paadlesson1.viewmodel
 
 import androidx.lifecycle.LiveData
+import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import ru.gb.veber.paadlesson1.model.AppState
+import ru.gb.veber.paadlesson1.model.MainInteractor
 import ru.gb.veber.paadlesson1.model.datasources.DataSourceLocal
 import ru.gb.veber.paadlesson1.model.datasources.DataSourceRemote
+import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
+import ru.gb.veber.paadlesson1.model.datasources.network.Meanings
 import ru.gb.veber.paadlesson1.model.repository.RepositoryImplementation
-import ru.gb.veber.paadlesson1.model.MainInteractor
+import javax.inject.Inject
 
-class MainViewModel(
-    private val interact: MainInteractor = MainInteractor(
-        RepositoryImplementation(DataSourceRemote()),
-        RepositoryImplementation(DataSourceLocal())),
-) : BaseViewModel<AppState>() {
+class MainViewModel @Inject constructor(private val interactor: MainInteractor) :
+    BaseViewModel<AppState>() {
 
     private var appState: AppState? = null
 
-    override fun getData(word: String, isOnline: Boolean): LiveData<AppState> {
+    fun subscribe(): LiveData<AppState> {
+        return liveDataForViewToObserve
+    }
+
+    override fun getData(word: String, isOnline: Boolean) {
         compositeDisposable.add(
-            interact.getData(word, isOnline)
+            interactor.getData(word, isOnline)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .doOnSubscribe {
-                    liveDataForViewToObserve.value = AppState.Loading(null)
-                }.subscribeWith(getObserver()))
-
-        return super.getData(word, isOnline)
+                .doOnSubscribe(doOnSubscribe())
+                .subscribeWith(getObserver())
+        )
     }
+
+    private fun doOnSubscribe(): (Disposable) -> Unit =
+        { liveDataForViewToObserve.value = AppState.Loading(null) }
 
     private fun getObserver(): DisposableObserver<AppState> {
         return object : DisposableObserver<AppState>() {
+
             override fun onNext(state: AppState) {
-                appState = state
-                liveDataForViewToObserve.value = state
+                appState = parseSearchResults(state)
+                liveDataForViewToObserve.value = appState
             }
 
             override fun onError(e: Throwable) {
@@ -41,6 +48,74 @@ class MainViewModel(
 
             override fun onComplete() {
             }
+        }
+    }
+}
+
+//class MainViewModel(
+//    private val interact: MainInteractor = MainInteractor(
+//        RepositoryImplementation(DataSourceRemote()),
+//        RepositoryImplementation(DataSourceLocal())),
+//) : BaseViewModel<AppState>() {
+//
+//    private var appState: AppState? = null
+//
+//    override fun getData(word: String, isOnline: Boolean): LiveData<AppState> {
+//        compositeDisposable.add(
+//            interact.getData(word, isOnline)
+//                .subscribeOn(schedulerProvider.io())
+//                .observeOn(schedulerProvider.ui())
+//                .doOnSubscribe {
+//                    liveDataForViewToObserve.value = AppState.Loading(null)
+//                }.subscribeWith(getObserver()))
+//
+//        return super.getData(word, isOnline)
+//    }
+//
+//    private fun getObserver(): DisposableObserver<AppState> {
+//        return object : DisposableObserver<AppState>() {
+//            override fun onNext(state: AppState) {
+//                appState = state
+//                liveDataForViewToObserve.value = state
+//            }
+//
+//            override fun onError(e: Throwable) {
+//                liveDataForViewToObserve.value = AppState.Error(e)
+//            }
+//
+//            override fun onComplete() {
+//            }
+//        }
+//    }
+//}
+
+fun parseSearchResults(state: AppState): AppState {
+    val newSearchResults = arrayListOf<DataModel>()
+    when (state) {
+        is AppState.Success -> {
+            val searchResults = state.data
+            if (!searchResults.isNullOrEmpty()) {
+                for (searchResult in searchResults) {
+                    parseResult(searchResult, newSearchResults)
+                }
+            }
+        }
+        else -> {}
+    }
+
+    return AppState.Success(newSearchResults)
+}
+
+private fun parseResult(dataModel: DataModel, newDataModels: ArrayList<DataModel>) {
+    if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
+        val newMeanings = arrayListOf<Meanings>()
+        for (meaning in dataModel.meanings) {
+            if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
+                newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+            }
+        }
+        if (newMeanings.isNotEmpty()) {
+            newDataModels.add(DataModel(dataModel.text, newMeanings))
         }
     }
 }

@@ -5,14 +5,17 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.android.AndroidInjection
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
 import ru.gb.veber.paadlesson1.model.AppState
 import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
 import ru.gb.veber.paadlesson1.viewmodel.MainViewModel
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<AppState>() {
 
@@ -26,9 +29,17 @@ class MainActivity : BaseActivity<AppState>() {
             }
         }
 
-    override val model: MainViewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(MainViewModel::class.java)
-    }
+    override lateinit var model: MainViewModel
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
+//    override val model: MainViewModel by lazy {
+//        ViewModelProvider.NewInstanceFactory().create(MainViewModel::class.java)
+//    }
+
+
+
+
 
     override fun renderData(appState: AppState) {
         when (appState) {
@@ -71,6 +82,11 @@ class MainActivity : BaseActivity<AppState>() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initialization()
+
+        AndroidInjection.inject(this)
+        model = viewModelFactory.create(MainViewModel::class.java)
+        model.subscribe().observe(this@MainActivity, Observer<AppState> {
+            renderData(it) })
     }
 
     private fun initialization() {
@@ -80,9 +96,10 @@ class MainActivity : BaseActivity<AppState>() {
     private val searchViewListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let { keyWord ->
-                model.getData(keyWord, true).observe(this@MainActivity) {
-                    renderData(it)
-                }
+               model.getData(keyWord, true)
+//                model.getData(keyWord, true).observe(this@MainActivity) {
+//                    renderData(it)
+//                }
             }
             binding.searchView.clearFocus();
             return true
@@ -99,9 +116,7 @@ class MainActivity : BaseActivity<AppState>() {
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
             //presenter.getData("hi", true)
-            model.getData("Hi",true).observe(this){
-                renderData(it)
-            }
+            model.getData("Hi", true)
         }
     }
 
