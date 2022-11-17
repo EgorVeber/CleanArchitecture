@@ -5,19 +5,20 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
+import geekbrains.ru.translator.utils.network.isOnline
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
 import ru.gb.veber.paadlesson1.model.AppState
+import ru.gb.veber.paadlesson1.model.MainInteractor
 import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
 import ru.gb.veber.paadlesson1.viewmodel.MainViewModel
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<AppState>() {
+class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -30,15 +31,9 @@ class MainActivity : BaseActivity<AppState>() {
         }
 
     override lateinit var model: MainViewModel
+
     @Inject
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
-
-//    override val model: MainViewModel by lazy {
-//        ViewModelProvider.NewInstanceFactory().create(MainViewModel::class.java)
-//    }
-
-
-
 
 
     override fun renderData(appState: AppState) {
@@ -85,8 +80,9 @@ class MainActivity : BaseActivity<AppState>() {
 
         AndroidInjection.inject(this)
         model = viewModelFactory.create(MainViewModel::class.java)
-        model.subscribe().observe(this@MainActivity, Observer<AppState> {
-            renderData(it) })
+        model.subscribe().observe(this@MainActivity) {
+            renderData(it)
+        }
     }
 
     private fun initialization() {
@@ -95,11 +91,13 @@ class MainActivity : BaseActivity<AppState>() {
 
     private val searchViewListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
+            isNetworkAvailable = isOnline(applicationContext)
             query?.let { keyWord ->
-               model.getData(keyWord, true)
-//                model.getData(keyWord, true).observe(this@MainActivity) {
-//                    renderData(it)
-//                }
+                if (isNetworkAvailable) {
+                    model.getData(keyWord, isNetworkAvailable)
+                } else {
+                    showNoInternetConnectionDialog()
+                }
             }
             binding.searchView.clearFocus();
             return true
