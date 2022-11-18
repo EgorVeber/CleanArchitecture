@@ -8,7 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
-import geekbrains.ru.translator.utils.network.isOnline
+import ru.gb.veber.paadlesson1.utils.network.isOnline
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
 import ru.gb.veber.paadlesson1.model.AppState
@@ -91,7 +91,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private val searchViewListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            isNetworkAvailable = isOnline(applicationContext)
+            isNetworkAvailable = isOnline(getConnectivityManager())
             query?.let { keyWord ->
                 if (isNetworkAvailable) {
                     model.getData(keyWord, isNetworkAvailable)

@@ -1,7 +1,7 @@
 package ru.gb.veber.paadlesson1.model
 
-import geekbrains.ru.translator.di.NAME_LOCAL
-import geekbrains.ru.translator.di.NAME_REMOTE
+import ru.gb.veber.paadlesson1.di.NAME_LOCAL
+import ru.gb.veber.paadlesson1.di.NAME_REMOTE
 import io.reactivex.Observable
 import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
 import ru.gb.veber.paadlesson1.model.repository.Repository

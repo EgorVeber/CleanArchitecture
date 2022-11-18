@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.rx
+package ru.gb.veber.paadlesson1.utils.rx
 
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

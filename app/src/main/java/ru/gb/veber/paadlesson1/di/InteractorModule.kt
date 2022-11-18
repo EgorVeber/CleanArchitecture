@@ -2,8 +2,6 @@ package ru.gb.veber.paadlesson1.di
 
 import dagger.Module
 import dagger.Provides
-import geekbrains.ru.translator.di.NAME_LOCAL
-import geekbrains.ru.translator.di.NAME_REMOTE
 import ru.gb.veber.paadlesson1.model.MainInteractor
 import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
 import ru.gb.veber.paadlesson1.model.repository.Repository

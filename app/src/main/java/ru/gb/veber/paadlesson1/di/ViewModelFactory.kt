@@ -1,8 +1,8 @@
 package ru.gb.veber.paadlesson1.di
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.gb.veber.paadlesson1.viewmodel.MainViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -16,6 +16,7 @@ constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<Vi
             ?: viewModels.asIterable().firstOrNull { modelClass.isAssignableFrom(it.key) }?.value
             ?: throw IllegalArgumentException("unknown model class $modelClass")
         return try {
+            Log.d("create", "create() called with: modelClass = $modelClass")
             creator.get() as T
         } catch (e: Exception) {
             throw RuntimeException(e)
