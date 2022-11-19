@@ -5,15 +5,9 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import ru.gb.veber.paadlesson1.model.AppState
 import ru.gb.veber.paadlesson1.model.MainInteractor
-import ru.gb.veber.paadlesson1.model.datasources.DataSourceLocal
-import ru.gb.veber.paadlesson1.model.datasources.DataSourceRemote
-import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
-import ru.gb.veber.paadlesson1.model.datasources.network.Meanings
-import ru.gb.veber.paadlesson1.model.repository.RepositoryImplementation
 import ru.gb.veber.paadlesson1.utils.parseSearchResults
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val interactor: MainInteractor) :
+class MainViewModel (private val interactor: MainInteractor) :
     BaseViewModel<AppState>() {
 
     private var appState: AppState? = null

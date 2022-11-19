@@ -5,18 +5,17 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
-import ru.gb.veber.paadlesson1.utils.network.isOnline
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
 import ru.gb.veber.paadlesson1.model.AppState
 import ru.gb.veber.paadlesson1.model.MainInteractor
 import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
+import ru.gb.veber.paadlesson1.utils.network.isOnline
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
 import ru.gb.veber.paadlesson1.viewmodel.MainViewModel
-import javax.inject.Inject
+
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
@@ -32,8 +31,42 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     override lateinit var model: MainViewModel
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        initialization()
+
+        val viewModel: MainViewModel by viewModel()
+        model = viewModel
+        model.subscribe().observe(this@MainActivity) {
+            renderData(it)
+        }
+    }
+
+    private fun initialization() {
+        binding.searchView.setOnQueryTextListener(searchViewListener)
+    }
+
+    private val searchViewListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            isNetworkAvailable = isOnline(getConnectivityManager())
+            query?.let { keyWord ->
+                if (isNetworkAvailable) {
+                    model.getData(keyWord, isNetworkAvailable)
+                } else {
+                    showNoInternetConnectionDialog()
+                }
+            }
+            binding.searchView.clearFocus();
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return true
+        }
+    }
 
 
     override fun renderData(appState: AppState) {
@@ -68,43 +101,6 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             is AppState.Error -> {
                 showErrorScreen(appState.error.message)
             }
-        }
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        initialization()
-
-        AndroidInjection.inject(this)
-        model = viewModelFactory.create(MainViewModel::class.java)
-        model.subscribe().observe(this@MainActivity) {
-            renderData(it)
-        }
-    }
-
-    private fun initialization() {
-        binding.searchView.setOnQueryTextListener(searchViewListener)
-    }
-
-    private val searchViewListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            isNetworkAvailable = isOnline(getConnectivityManager())
-            query?.let { keyWord ->
-                if (isNetworkAvailable) {
-                    model.getData(keyWord, isNetworkAvailable)
-                } else {
-                    showNoInternetConnectionDialog()
-                }
-            }
-            binding.searchView.clearFocus();
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return true
         }
     }
 

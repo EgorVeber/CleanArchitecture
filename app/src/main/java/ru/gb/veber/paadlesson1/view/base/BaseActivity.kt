@@ -5,11 +5,11 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import ru.gb.veber.paadlesson1.utils.network.isOnline
 import geekbrains.ru.translator.utils.ui.AlertDialogFragment
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.model.AppState
 import ru.gb.veber.paadlesson1.model.Interactor
+import ru.gb.veber.paadlesson1.utils.network.isOnline
 import ru.gb.veber.paadlesson1.viewmodel.BaseViewModel
 
 
