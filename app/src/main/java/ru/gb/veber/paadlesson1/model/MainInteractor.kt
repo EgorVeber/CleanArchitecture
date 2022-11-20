@@ -8,11 +8,13 @@ class MainInteractor(
     val remoteRepo: Repository<List<DataModel>>,
     val localRepo: Repository<List<DataModel>>,
 ) : Interactor<AppState> {
-    override fun getData(word: String, fromRemoteSources: Boolean): Observable<AppState> {
-        return if (fromRemoteSources) {
-            remoteRepo.getData(word).map { AppState.Success(it) }
-        } else {
-            localRepo.getData(word).map { AppState.Success(it) }
-        }
+    override suspend fun getData(word: String, fromRemoteSource: Boolean): AppState {
+        return AppState.Success(
+            if (fromRemoteSource) {
+                remoteRepo
+            } else {
+                localRepo
+            }.getData(word)
+        )
     }
 }
