@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
-import ru.gb.veber.paadlesson1.model.AppState
-import ru.gb.veber.paadlesson1.model.MainInteractor
-import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
-import ru.gb.veber.paadlesson1.utils.network.isOnline
+import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
+import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.core.utils.network.isOnline
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
-import ru.gb.veber.paadlesson1.viewmodel.MainViewModel
 
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
@@ -109,8 +108,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         showViewError()
         binding.errorTextview.text = error ?: getString(R.string.undefined_error)
         binding.reloadButton.setOnClickListener {
-            //presenter.getData("hi", true)
-            model.getData("Hi", true)
+            model.getData("Error", true)
         }
     }
 
@@ -126,13 +124,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     }
 
     private fun showViewError() {
-
         binding.loadingFrameLayout.visibility = GONE
         binding.errorLinearLayout.visibility = VISIBLE
-    }
-
-    companion object {
-        private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG =
-            "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
     }
 }
