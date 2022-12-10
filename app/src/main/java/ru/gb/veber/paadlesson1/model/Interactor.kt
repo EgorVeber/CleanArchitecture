@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.presenter
+package ru.gb.veber.paadlesson1.model
 
 import io.reactivex.Observable
 
