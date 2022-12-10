@@ -5,12 +5,11 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import ru.gb.veber.paadlesson1.utils.network.isOnline
-import geekbrains.ru.translator.utils.ui.AlertDialogFragment
+import ru.gb.veber.paadlesson1.core.utils.ui.AlertDialogFragment
 import ru.gb.veber.paadlesson1.R
-import ru.gb.veber.paadlesson1.model.AppState
-import ru.gb.veber.paadlesson1.model.Interactor
-import ru.gb.veber.paadlesson1.viewmodel.BaseViewModel
+import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.interactor.Interactor
+import ru.gb.veber.paadlesson1.core.utils.network.isOnline
 
 
 abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity() {
@@ -41,7 +40,7 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
         )
     }
 
-    private fun showAlertDialog(title: String?, message: String?) {
+    protected fun showAlertDialog(title: String?, message: String?) {
         AlertDialogFragment.newInstance(title, message)
             .show(supportFragmentManager, DIALOG_FRAGMENT_TAG)
     }
@@ -51,7 +50,7 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
     }
 
     protected fun getConnectivityManager(): ConnectivityManager {
-       return applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
     abstract fun renderData(dataModel: T)

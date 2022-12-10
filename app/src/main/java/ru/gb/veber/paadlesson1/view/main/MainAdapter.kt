@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.gb.veber.paadlesson1.databinding.ActivityMainRecyclerviewItemBinding
-import ru.gb.veber.paadlesson1.model.datasources.network.DataModel
+import ru.gb.veber.paadlesson1.model.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
