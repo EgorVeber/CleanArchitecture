@@ -27,7 +27,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity"
+            android:name=".view.main.DescriptionActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".view.history.HistoryActivity"
             android:exported="true">
         </activity>
     </application>

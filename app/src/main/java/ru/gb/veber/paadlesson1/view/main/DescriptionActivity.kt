@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.view.descriptionscreen
+package ru.gb.veber.paadlesson1.view.main
 
 import android.content.Context
 import android.content.Intent

@@ -10,8 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
-
-import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.core.utils.getEmptyString
 import ru.gb.veber.paadlesson1.databinding.SearchDialogFragmentBinding
 

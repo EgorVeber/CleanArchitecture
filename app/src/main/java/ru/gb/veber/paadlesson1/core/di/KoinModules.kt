@@ -17,24 +17,17 @@ import ru.gb.veber.paadlesson1.view.history.HistoryViewModel
 import ru.gb.veber.paadlesson1.view.main.MainViewModel
 
 val application = module {
-
-    // single указывает, что БД должна быть в единственном экземпляре
-    single { Room.databaseBuilder(get(), HistoryDataBase::class.java,
-        "HistoryDB").build() }
-
+    single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
     single { get<HistoryDataBase>().historyDao() }
-
-    single<Repository<List<DataModel>>> {
-        RepositoryImplementation(RetrofitImplementation()) }
-
+    single<Repository<List<DataModel>>> { RepositoryImplementation(RetrofitImplementation()) }
     single<RepositoryLocal<List<DataModel>>> {
         RepositoryImplementationLocal(RoomDataBaseImplementation(get()))
     }
 }
 
 val mainScreen = module {
-    factory { MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
-    factory { MainViewModel(interactor = get()) }
+    factory { MainViewModel(get()) }
+    factory { MainInteractor(get(), get()) }
 }
 
 val historyScreen = module {
