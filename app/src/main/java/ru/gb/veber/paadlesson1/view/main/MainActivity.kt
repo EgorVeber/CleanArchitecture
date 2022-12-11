@@ -9,16 +9,16 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.gb.veber.model.data.AppState
+import ru.gb.veber.model.data.DataModel
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.core.utils.convertMeaningsToString
-import ru.gb.veber.paadlesson1.core.utils.network.isOnline
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
-import ru.gb.veber.paadlesson1.model.data.DataModel
-import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
 import ru.gb.veber.paadlesson1.view.history.HistoryActivity
 import ru.gb.veber.paadlesson1.view.historydialog.SearchHistoryDialog
+import ru.gb.veber.utils.isOnline
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
@@ -44,7 +44,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
                         this@MainActivity,
                         data.text!!,
                         convertMeaningsToString(data.meanings!!),
-                        data.meanings[0].imageUrl
+                        data.meanings!![0].imageUrl
                     )
                 )
             }

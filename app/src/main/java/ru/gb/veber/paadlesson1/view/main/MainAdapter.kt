@@ -3,8 +3,8 @@ package ru.gb.veber.paadlesson1.view.main
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.gb.veber.model.data.DataModel
 import ru.gb.veber.paadlesson1.databinding.ActivityMainRecyclerviewItemBinding
-import ru.gb.veber.paadlesson1.model.data.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,

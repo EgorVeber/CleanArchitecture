@@ -2,8 +2,8 @@ package ru.gb.veber.paadlesson1.view.history
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.launch
+import ru.gb.veber.model.data.AppState
 import ru.gb.veber.paadlesson1.core.utils.parseLocalSearchResults
-import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.HistoryInteractor
 import ru.gb.veber.paadlesson1.view.base.BaseViewModel
 

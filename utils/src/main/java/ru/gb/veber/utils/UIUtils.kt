@@ -1,8 +1,7 @@
-package ru.gb.veber.paadlesson1.core.utils.ui
+package ru.gb.veber.utils
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
-import ru.gb.veber.paadlesson1.R
 
 fun getStubAlertDialog(context: Context): AlertDialog {
     return getAlertDialog(context, null, null)

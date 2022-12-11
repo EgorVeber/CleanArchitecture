@@ -1,7 +1,7 @@
 package ru.gb.veber.paadlesson1.model.interactor
 
-import ru.gb.veber.paadlesson1.model.data.DataModel
-import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.model.data.AppState
+import ru.gb.veber.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.reposotory.Repository
 import ru.gb.veber.paadlesson1.model.reposotory.RepositoryLocal
 

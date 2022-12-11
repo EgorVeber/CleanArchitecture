@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.model.data
+package ru.gb.veber.model.data
 
 sealed class AppState {
     data class Success(val data: List<DataModel>?) : AppState()
