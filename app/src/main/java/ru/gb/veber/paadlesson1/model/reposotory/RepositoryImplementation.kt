@@ -1,6 +1,6 @@
 package ru.gb.veber.paadlesson1.model.reposotory
 
-import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.datasource.DataSource
 
 

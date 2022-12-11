@@ -1,15 +1,13 @@
-package ru.gb.veber.paadlesson1.view.main
+package ru.gb.veber.paadlesson1.view.historydialog
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ru.gb.veber.paadlesson1.core.utils.parseSearchResults
+import ru.gb.veber.paadlesson1.core.utils.parseLocalSearchResults
 import ru.gb.veber.paadlesson1.model.data.AppState
-import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
+import ru.gb.veber.paadlesson1.model.interactor.SearchHistoryDialogInteractor
 import ru.gb.veber.paadlesson1.view.base.BaseViewModel
 
-class MainViewModel(private val interactor: MainInteractor) :
+class SearchHistoryDialogViewModel(private val interactor: SearchHistoryDialogInteractor) :
     BaseViewModel<AppState>() {
 
     private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
@@ -21,16 +19,13 @@ class MainViewModel(private val interactor: MainInteractor) :
     override fun getData(word: String, isOnline: Boolean) {
         _mutableLiveData.value = AppState.Loading(null)
         cancelJob()
-        viewModelCoroutineScope.launch {
-            startInteractor(word, isOnline)
-        }
+        viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
     }
 
-    private suspend fun startInteractor(word: String, isOnline: Boolean) =
-        withContext(Dispatchers.IO) {
-            _mutableLiveData.postValue(parseSearchResults(interactor.getData(word,
-                isOnline)))
-        }
+
+    private suspend fun startInteractor(word: String, isOnline: Boolean) {
+        _mutableLiveData.postValue(interactor.getDataByWord(word))
+    }
 
     override fun handleError(error: Throwable) {
         _mutableLiveData.postValue(AppState.Error(error))

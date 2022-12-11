@@ -16,7 +16,7 @@ abstract class BaseViewModel<T : AppState>(
             handleError(throwable)
         })
 
-    abstract fun getData(word: String, isOnline: Boolean)
+    abstract  fun getData(word: String, isOnline: Boolean)
 
     override fun onCleared() {
         cancelJob()

@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.gb.veber.paadlesson1.databinding.ActivityMainRecyclerviewItemBinding
-import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<DataModel>,
 ) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
+    private var data: List<DataModel> = arrayListOf()
 
     fun setData(data: List<DataModel>) {
         this.data = data
@@ -23,11 +23,11 @@ class MainAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-        holder.bind(data.get(position))
+        holder.bind(data!!.get(position))
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return data!!.size
     }
 
     inner class RecyclerItemViewHolder(private var binging: ActivityMainRecyclerviewItemBinding) :
