@@ -1,5 +1,4 @@
 package ru.gb.veber.paadlesson1.model.database
-
 import androidx.room.*
 
 @Dao

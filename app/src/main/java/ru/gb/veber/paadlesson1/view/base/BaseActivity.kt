@@ -10,7 +10,7 @@ import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.core.utils.network.isOnline
 import ru.gb.veber.paadlesson1.core.utils.ui.AlertDialogFragment
 import ru.gb.veber.paadlesson1.databinding.LoadingLayoutBinding
-import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.Interactor
 

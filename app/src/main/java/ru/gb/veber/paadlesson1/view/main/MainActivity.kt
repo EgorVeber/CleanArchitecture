@@ -2,19 +2,23 @@ package ru.gb.veber.paadlesson1.view.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gb.veber.paadlesson1.R
 import ru.gb.veber.paadlesson1.core.utils.convertMeaningsToString
 import ru.gb.veber.paadlesson1.core.utils.network.isOnline
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
-import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
 import ru.gb.veber.paadlesson1.view.history.HistoryActivity
+import ru.gb.veber.paadlesson1.view.historydialog.SearchHistoryDialog
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
@@ -23,12 +27,15 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     private lateinit var binding: ActivityMainBinding
     override lateinit var model: MainViewModel
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
+
+
     private val fabClickListener: View.OnClickListener =
         View.OnClickListener {
-            val searchDialogFragment = SearchDialogFragment.newInstance()
-            searchDialogFragment.setOnSearchClickListener(onSearchClickListener)
-            searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+            val searchHistoryDialog = SearchHistoryDialog.newInstance()
+            searchHistoryDialog.setOnSearchClickListener(onSearchClickListener)
+            searchHistoryDialog.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
+
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
@@ -43,8 +50,8 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             }
         }
 
-    private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
-        object : SearchDialogFragment.OnSearchClickListener {
+    private val onSearchClickListener: SearchHistoryDialog.OnSearchClickListener =
+        object : SearchHistoryDialog.OnSearchClickListener {
             override fun onClick(searchWord: String) {
                 isNetworkAvailable = isOnline(getConnectivityManager())
                 if (isNetworkAvailable) {
@@ -55,6 +62,24 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
             }
         }
 
+    private val searchViewListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            isNetworkAvailable = isOnline(getConnectivityManager())
+            query?.let { keyWord ->
+                if (isNetworkAvailable) {
+                    model.getData(keyWord, isNetworkAvailable)
+                } else {
+                    showNoInternetConnectionDialog()
+                }
+            }
+            binding.searchView.clearFocus();
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return true
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +91,9 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     }
 
     override fun setDataToAdapter(data: List<DataModel>) {
+        data.forEach {
+            Log.d("TAG", it.text.toString())
+        }
         adapter.setData(data)
     }
 
@@ -85,9 +113,6 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     }
 
     private fun iniViewModel() {
-        if (binding.mainActivityRecyclerview.adapter != null) {
-            throw IllegalStateException("The ViewModel should be initialised first")
-        }
         val viewModel: MainViewModel by viewModel()
         model = viewModel
         model.subscribe().observe(this@MainActivity) { renderData(it) }
@@ -95,6 +120,9 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private fun initViews() {
         binding.searchFab.setOnClickListener(fabClickListener)
+        binding.searchView.setOnQueryTextListener(searchViewListener)
+        binding.mainActivityRecyclerview.layoutManager =
+            LinearLayoutManager(applicationContext)
         binding.mainActivityRecyclerview.adapter = adapter
     }
 }

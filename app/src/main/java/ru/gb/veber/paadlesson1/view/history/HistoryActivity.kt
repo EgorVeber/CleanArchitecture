@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gb.veber.paadlesson1.databinding.ActivityHistoryBinding
-import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.HistoryInteractor
 import ru.gb.veber.paadlesson1.view.base.BaseActivity

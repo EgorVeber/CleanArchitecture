@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ru.gb.veber.paadlesson1.R
-import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.DataModel
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
 

@@ -1,19 +1,20 @@
 package ru.gb.veber.paadlesson1.core.di
 
 import androidx.room.Room
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.database.HistoryDataBase
 import ru.gb.veber.paadlesson1.model.datasource.RetrofitImplementation
 import ru.gb.veber.paadlesson1.model.datasource.RoomDataBaseImplementation
 import ru.gb.veber.paadlesson1.model.interactor.HistoryInteractor
 import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
+import ru.gb.veber.paadlesson1.model.interactor.SearchHistoryDialogInteractor
 import ru.gb.veber.paadlesson1.model.reposotory.Repository
 import ru.gb.veber.paadlesson1.model.reposotory.RepositoryImplementation
 import ru.gb.veber.paadlesson1.model.reposotory.RepositoryImplementationLocal
 import ru.gb.veber.paadlesson1.model.reposotory.RepositoryLocal
 import ru.gb.veber.paadlesson1.view.history.HistoryViewModel
+import ru.gb.veber.paadlesson1.view.historydialog.SearchHistoryDialogViewModel
 import ru.gb.veber.paadlesson1.view.main.MainViewModel
 
 val application = module {
@@ -33,4 +34,9 @@ val mainScreen = module {
 val historyScreen = module {
     factory { HistoryViewModel(get()) }
     factory { HistoryInteractor(get(), get()) }
+}
+
+val dialogHistory = module {
+    factory { SearchHistoryDialogViewModel(get()) }
+    factory { SearchHistoryDialogInteractor(get()) }
 }

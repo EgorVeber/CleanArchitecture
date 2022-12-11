@@ -1,8 +1,9 @@
 package ru.gb.veber.paadlesson1.core.utils
 
-import ru.gb.veber.paadlesson1.model.DataModel
-import ru.gb.veber.paadlesson1.model.Meanings
+import ru.gb.veber.paadlesson1.model.data.DataModel
+import ru.gb.veber.paadlesson1.model.data.Meanings
 import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.data.Translation
 import ru.gb.veber.paadlesson1.model.database.HistoryEntity
 
 
@@ -50,7 +51,7 @@ fun convertMeaningsToString(meanings: List<Meanings>): String {
 }
 
 fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<DataModel> {
-    val dataModel= ArrayList<DataModel>()
+    val dataModel = ArrayList<DataModel>()
     if (!list.isNullOrEmpty()) {
         for (entity in list) {
             dataModel.add(DataModel(entity.word, null))
@@ -59,15 +60,20 @@ fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<DataModel> {
     return dataModel
 }
 
+
+fun mapHistoryToData(value: HistoryEntity): DataModel {
+    return DataModel(value.word, listOf(Meanings(Translation(value.description), null)))
+}
+
 fun convertDataModelSuccessToEntity(appState: AppState): HistoryEntity? {
     return when (appState) {
         is AppState.Success -> {
             val searchResult = appState.data
-            if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty())
-            {
+            if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty()) {
                 null
             } else {
-                HistoryEntity(searchResult[0].text!!, null)
+                HistoryEntity(searchResult[0].text!!,
+                    searchResult[0].meanings?.get(0)?.translation?.translation.toString())
             }
         }
         else -> null
@@ -80,7 +86,7 @@ fun parseLocalSearchResults(appState: AppState): AppState {
 
 private fun mapResult(
     appState: AppState,
-    isOnline: Boolean
+    isOnline: Boolean,
 ): List<DataModel> {
     val newSearchResults = arrayListOf<DataModel>()
     when (appState) {
@@ -95,7 +101,7 @@ private fun mapResult(
 private fun getSuccessResultData(
     appState: AppState.Success,
     isOnline: Boolean,
-    newDataModels: ArrayList<DataModel>
+    newDataModels: ArrayList<DataModel>,
 ) {
     val dataModels: List<DataModel> = appState.data as List<DataModel>
     if (dataModels.isNotEmpty()) {
@@ -111,13 +117,17 @@ private fun getSuccessResultData(
     }
 }
 
-private fun parseOnlineResult(dataModel: DataModel, newDataModels:
-ArrayList<DataModel>) {
+private fun parseOnlineResult(
+    dataModel: DataModel,
+    newDataModels:
+    ArrayList<DataModel>,
+) {
     if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
         val newMeanings = arrayListOf<Meanings>()
         for (meaning in dataModel.meanings) {
             if (meaning.translation != null &&
-                !meaning.translation.translation.isNullOrBlank()) {
+                !meaning.translation.translation.isNullOrBlank()
+            ) {
                 newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
             }
         }
