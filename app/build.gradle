@@ -62,6 +62,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     //Coil
     implementation("io.coil-kt:coil:2.1.0")
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     //Koin
     def koin_version = "3.2.2"
@@ -76,6 +77,15 @@ dependencies {
     kapt 'com.google.dagger:dagger-android-processor:2.44.1'
     kapt 'com.google.dagger:dagger-compiler:2.44.1'
 
+
+//Download images
+//Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+//Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+//Coil
+    implementation 'io.coil-kt:coil:0.11.0'
 
 
     testImplementation 'junit:junit:4.13.2'

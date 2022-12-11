@@ -6,8 +6,10 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import geekbrains.ru.translator.view.descriptionscreen.DescriptionActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gb.veber.paadlesson1.R
+import ru.gb.veber.paadlesson1.core.utils.convertMeaningsToString
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
 import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
@@ -24,7 +26,13 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+                startActivity(
+                    DescriptionActivity.getIntent(
+                        this@MainActivity,
+                        data.text!!,
+                        convertMeaningsToString(data.meanings!!),
+                        data.meanings[0].imageUrl
+                    ))
             }
         }
 
