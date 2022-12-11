@@ -8,7 +8,7 @@ import ru.gb.veber.paadlesson1.model.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<DataModel>,
+    private var data: List<DataModel>?=null,
 ) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
 
@@ -23,11 +23,11 @@ class MainAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-        holder.bind(data.get(position))
+        holder.bind(data!!.get(position))
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return data!!.size
     }
 
     inner class RecyclerItemViewHolder(private var binging: ActivityMainRecyclerviewItemBinding) :

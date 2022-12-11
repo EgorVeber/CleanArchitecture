@@ -1,9 +1,22 @@
 package ru.gb.veber.paadlesson1.model.datasource
 
+import ru.gb.veber.paadlesson1.core.utils.convertDataModelSuccessToEntity
+import ru.gb.veber.paadlesson1.core.utils.mapHistoryEntityToSearchResult
 import ru.gb.veber.paadlesson1.model.DataModel
+import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.paadlesson1.model.database.HistoryDao
+import ru.gb.veber.paadlesson1.model.reposotory.DataSourceLocal
 
-class RoomDataBaseImplementation : DataSource<List<DataModel>> {
+class RoomDataBaseImplementation(private val historyDao: HistoryDao) :
+    DataSourceLocal<List<DataModel>> {
+
     override suspend fun getData(word: String): List<DataModel> {
-        TODO("not implemented")
+        return mapHistoryEntityToSearchResult(historyDao.all())
+    }
+
+    override suspend fun saveToDB(appState: AppState) {
+        convertDataModelSuccessToEntity(appState)?.let {
+            historyDao.insert(it)
+        }
     }
 }
