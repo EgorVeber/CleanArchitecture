@@ -20,7 +20,7 @@ android {
     }
 
     buildFeatures {
-        viewBinding  = true
+        viewBinding = true
     }
 
     buildTypes {
@@ -41,12 +41,15 @@ android {
 
 dependencies {
 
+    //Add Module
+    implementation(project(mapOf("path" to ":Model")))
+    implementation(project(mapOf("path" to ":utils")))
+
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("com.google.android.material:material:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation(project(mapOf("path" to ":Model")))
-    implementation(project(mapOf("path" to ":utils")))
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
@@ -75,7 +78,7 @@ dependencies {
     //Picasso //Glide //Coil
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.github.bumptech.glide:glide:4.11.0")
-    kapt ("com.github.bumptech.glide:compiler:4.11.0")
+    kapt("com.github.bumptech.glide:compiler:4.11.0")
     implementation("io.coil-kt:coil:0.11.0")
 
     //Room
