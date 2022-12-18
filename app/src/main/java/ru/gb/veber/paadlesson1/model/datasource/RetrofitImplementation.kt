@@ -6,8 +6,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.gb.veber.model.data.DataModel
 import ru.gb.veber.paadlesson1.core.utils.network.BaseInterceptor
-import ru.gb.veber.paadlesson1.model.data.DataModel
 
 class RetrofitImplementation : DataSource<List<DataModel>> {
 

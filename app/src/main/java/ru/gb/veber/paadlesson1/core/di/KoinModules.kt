@@ -2,7 +2,7 @@ package ru.gb.veber.paadlesson1.core.di
 
 import androidx.room.Room
 import org.koin.dsl.module
-import ru.gb.veber.paadlesson1.model.data.DataModel
+import ru.gb.veber.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.database.HistoryDataBase
 import ru.gb.veber.paadlesson1.model.datasource.RetrofitImplementation
 import ru.gb.veber.paadlesson1.model.datasource.RoomDataBaseImplementation

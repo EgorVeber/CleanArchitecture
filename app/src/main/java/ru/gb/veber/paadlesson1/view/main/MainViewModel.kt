@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.gb.veber.model.data.AppState
 import ru.gb.veber.paadlesson1.core.utils.parseSearchResults
-import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
 import ru.gb.veber.paadlesson1.view.base.BaseViewModel
 

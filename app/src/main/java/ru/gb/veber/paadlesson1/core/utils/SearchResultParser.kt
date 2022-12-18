@@ -1,9 +1,9 @@
 package ru.gb.veber.paadlesson1.core.utils
 
-import ru.gb.veber.paadlesson1.model.data.DataModel
-import ru.gb.veber.paadlesson1.model.data.Meanings
-import ru.gb.veber.paadlesson1.model.data.AppState
-import ru.gb.veber.paadlesson1.model.data.Translation
+import ru.gb.veber.model.data.AppState
+import ru.gb.veber.model.data.DataModel
+import ru.gb.veber.model.data.Meanings
+import ru.gb.veber.model.data.Translation
 import ru.gb.veber.paadlesson1.model.database.HistoryEntity
 
 
@@ -27,8 +27,8 @@ fun parseSearchResults(state: AppState): AppState {
 private fun parseResult(dataModel: DataModel, newDataModels: ArrayList<DataModel>) {
     if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
         val newMeanings = arrayListOf<Meanings>()
-        for (meaning in dataModel.meanings) {
-            if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
+        for (meaning in dataModel.meanings!!) {
+            if (meaning.translation != null && !meaning.translation!!.translation.isNullOrBlank()) {
                 newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
             }
         }
@@ -124,9 +124,9 @@ private fun parseOnlineResult(
 ) {
     if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
         val newMeanings = arrayListOf<Meanings>()
-        for (meaning in dataModel.meanings) {
+        for (meaning in dataModel.meanings!!) {
             if (meaning.translation != null &&
-                !meaning.translation.translation.isNullOrBlank()
+                !meaning.translation!!.translation.isNullOrBlank()
             ) {
                 newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
             }

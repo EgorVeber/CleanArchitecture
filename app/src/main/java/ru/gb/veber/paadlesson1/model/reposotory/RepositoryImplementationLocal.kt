@@ -1,7 +1,7 @@
 package ru.gb.veber.paadlesson1.model.reposotory
 
-import ru.gb.veber.paadlesson1.model.data.DataModel
-import ru.gb.veber.paadlesson1.model.data.AppState
+import ru.gb.veber.model.data.AppState
+import ru.gb.veber.model.data.DataModel
 
 class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<DataModel>>) :
     RepositoryLocal<List<DataModel>> {

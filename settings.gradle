@@ -12,5 +12,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "PAADlesson1"
 include ':app'
+include ':Model'
+include ':utils'

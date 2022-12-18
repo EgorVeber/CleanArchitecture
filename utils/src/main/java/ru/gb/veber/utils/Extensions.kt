@@ -1,3 +1,3 @@
-package ru.gb.veber.paadlesson1.core.utils
+package ru.gb.veber.utils
 
 fun String.Companion.getEmptyString(): String = ""

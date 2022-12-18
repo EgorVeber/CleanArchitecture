@@ -13,11 +13,11 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.gb.veber.model.data.AppState
 import ru.gb.veber.paadlesson1.core.utils.convertMeaningsToString
-import ru.gb.veber.paadlesson1.core.utils.getEmptyString
 import ru.gb.veber.paadlesson1.databinding.SearchDialogFragmentBinding
-import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.view.main.DescriptionActivity
+import ru.gb.veber.utils.getEmptyString
 
 class SearchHistoryDialog : BottomSheetDialogFragment() {
 

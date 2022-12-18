@@ -1,10 +1,10 @@
 package ru.gb.veber.paadlesson1.model.datasource
 
+import ru.gb.veber.model.data.AppState
+import ru.gb.veber.model.data.DataModel
 import ru.gb.veber.paadlesson1.core.utils.convertDataModelSuccessToEntity
 import ru.gb.veber.paadlesson1.core.utils.mapHistoryEntityToSearchResult
 import ru.gb.veber.paadlesson1.core.utils.mapHistoryToData
-import ru.gb.veber.paadlesson1.model.data.DataModel
-import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.database.HistoryDao
 import ru.gb.veber.paadlesson1.model.reposotory.DataSourceLocal
 
