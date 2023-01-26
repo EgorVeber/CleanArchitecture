@@ -1,52 +1,66 @@
 package ru.gb.veber.paadlesson1.view.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.Toast
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gb.veber.paadlesson1.R
+import ru.gb.veber.paadlesson1.core.utils.convertMeaningsToString
+import ru.gb.veber.paadlesson1.core.utils.network.isOnline
 import ru.gb.veber.paadlesson1.databinding.ActivityMainBinding
+import ru.gb.veber.paadlesson1.model.data.DataModel
 import ru.gb.veber.paadlesson1.model.data.AppState
 import ru.gb.veber.paadlesson1.model.interactor.MainInteractor
-import ru.gb.veber.paadlesson1.model.DataModel
-import ru.gb.veber.paadlesson1.core.utils.network.isOnline
 import ru.gb.veber.paadlesson1.view.base.BaseActivity
+import ru.gb.veber.paadlesson1.view.history.HistoryActivity
+import ru.gb.veber.paadlesson1.view.historydialog.SearchHistoryDialog
 
+private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
 class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
+    override lateinit var model: MainViewModel
+    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
 
-    private var adapter: MainAdapter? = null
+
+    private val fabClickListener: View.OnClickListener =
+        View.OnClickListener {
+            val searchHistoryDialog = SearchHistoryDialog.newInstance()
+            searchHistoryDialog.setOnSearchClickListener(onSearchClickListener)
+            searchHistoryDialog.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        }
+
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+                startActivity(
+                    DescriptionActivity.getIntent(
+                        this@MainActivity,
+                        data.text!!,
+                        convertMeaningsToString(data.meanings!!),
+                        data.meanings[0].imageUrl
+                    )
+                )
             }
         }
 
-    override lateinit var model: MainViewModel
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        initialization()
-
-        val viewModel: MainViewModel by viewModel()
-        model = viewModel
-        model.subscribe().observe(this@MainActivity) {
-            renderData(it)
+    private val onSearchClickListener: SearchHistoryDialog.OnSearchClickListener =
+        object : SearchHistoryDialog.OnSearchClickListener {
+            override fun onClick(searchWord: String) {
+                isNetworkAvailable = isOnline(getConnectivityManager())
+                if (isNetworkAvailable) {
+                    model.getData(searchWord, isNetworkAvailable)
+                } else {
+                    showNoInternetConnectionDialog()
+                }
+            }
         }
-    }
-
-    private fun initialization() {
-        binding.searchView.setOnQueryTextListener(searchViewListener)
-    }
 
     private val searchViewListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
@@ -67,64 +81,48 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    override fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Success -> {
-                val dataModel = appState.data
-                if (dataModel == null || dataModel.isEmpty()) {
-                    showErrorScreen(getString(R.string.empty_server_response_on_success))
-                } else {
-                    showViewSuccess()
-                    if (adapter == null) {
-                        binding.mainActivityRecyclerview.layoutManager =
-                            LinearLayoutManager(applicationContext)
-                        binding.mainActivityRecyclerview.adapter =
-                            MainAdapter(onListItemClickListener, dataModel)
-                    } else {
-                        adapter!!.setData(dataModel)
-                    }
-                }
+        iniViewModel()
+        initViews()
+    }
+
+    override fun setDataToAdapter(data: List<DataModel>) {
+        data.forEach {
+            Log.d("TAG", it.text.toString())
+        }
+        adapter.setData(data)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.history_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
+                true
             }
-            is AppState.Loading -> {
-                showViewLoading()
-                if (appState.progress != null) {
-                    binding.progressBarHorizontal.visibility = VISIBLE
-                    binding.progressBarRound.visibility = GONE
-                    binding.progressBarHorizontal.progress = appState.progress
-                } else {
-                    binding.progressBarHorizontal.visibility = GONE
-                    binding.progressBarRound.visibility = VISIBLE
-                }
-            }
-            is AppState.Error -> {
-                showErrorScreen(appState.error.message)
-            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-
-    private fun showErrorScreen(error: String?) {
-        showViewError()
-        binding.errorTextview.text = error ?: getString(R.string.undefined_error)
-        binding.reloadButton.setOnClickListener {
-            model.getData("Error", true)
-        }
+    private fun iniViewModel() {
+        val viewModel: MainViewModel by viewModel()
+        model = viewModel
+        model.subscribe().observe(this@MainActivity) { renderData(it) }
     }
 
-    private fun showViewSuccess() {
-        binding.successLinearLayout.visibility = VISIBLE
-        binding.loadingFrameLayout.visibility = GONE
-        binding.errorLinearLayout.visibility = GONE
-    }
-
-    private fun showViewLoading() {
-        binding.loadingFrameLayout.visibility = VISIBLE
-        binding.errorLinearLayout.visibility = GONE
-    }
-
-    private fun showViewError() {
-        binding.loadingFrameLayout.visibility = GONE
-        binding.errorLinearLayout.visibility = VISIBLE
+    private fun initViews() {
+        binding.searchFab.setOnClickListener(fabClickListener)
+        binding.searchView.setOnQueryTextListener(searchViewListener)
+        binding.mainActivityRecyclerview.layoutManager =
+            LinearLayoutManager(applicationContext)
+        binding.mainActivityRecyclerview.adapter = adapter
     }
 }
