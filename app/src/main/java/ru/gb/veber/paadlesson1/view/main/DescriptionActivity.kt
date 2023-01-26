@@ -23,9 +23,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.gb.veber.paadlesson1.R
-import ru.gb.veber.paadlesson1.core.utils.network.isOnline
-import ru.gb.veber.paadlesson1.core.utils.ui.AlertDialogFragment
 import ru.gb.veber.paadlesson1.databinding.ActivityDescriptionBinding
+import ru.gb.veber.utils.AlertDialogFragment
+import ru.gb.veber.utils.isOnline
 
 class DescriptionActivity : AppCompatActivity() {
 

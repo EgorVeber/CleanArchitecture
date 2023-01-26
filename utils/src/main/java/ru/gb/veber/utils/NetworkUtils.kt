@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.core.utils.network
+package ru.gb.veber.utils
 
 import android.net.ConnectivityManager
 import android.net.NetworkInfo

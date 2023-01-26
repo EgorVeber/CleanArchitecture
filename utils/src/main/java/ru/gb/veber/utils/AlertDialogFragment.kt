@@ -1,4 +1,4 @@
-package ru.gb.veber.paadlesson1.core.utils.ui
+package ru.gb.veber.utils
 
 import android.app.Dialog
 import android.os.Bundle
