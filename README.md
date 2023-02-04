@@ -1,4 +1,6 @@
-# CleanArchitecture![Чистая подробно](https://user-images.githubusercontent.com/99020910/216761520-a9c76f34-c18c-4ad8-a893-d3426a527e24.PNG)
+# CleanArchitecture![Чистая подробно]  
+(https://user-images.githubusercontent.com/99020910/216761520-a9c76f34-c18c-4ad8-a893-d3426a527e24.PNG)  
+  
 Интерфейсы в дата сорсах не надо.  
 Например моки или ЗАВЕАТИ НОВУ. РЕАЛИЗАЦИЮ.  
 REPO ЗАПИЗИВАЕМ ДАТА СОРСЫ.  
